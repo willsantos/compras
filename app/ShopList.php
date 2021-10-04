@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static create()
@@ -10,5 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ShopList extends Model
 {
+    use softDeletes;
     protected $fillable = ['name'];
 }

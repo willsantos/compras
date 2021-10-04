@@ -19,3 +19,4 @@ Route::get('/shop', 'ShopListsController@index')->name('lists');
 Route::get('/shop/criar', 'ShopListsController@create')->name('form_shop_create');
 Route::get('/shop/{id}', 'ShopListsController@show')->name('show_list');
 Route::post('/shop', 'ShopListsController@store');
+Route::delete('/shop/{id}', 'ShopListsController@destroy')->name('remove_list');

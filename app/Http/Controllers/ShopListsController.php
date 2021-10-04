@@ -36,5 +36,11 @@ class ShopListsController extends Controller
         return view('Shop.show', compact('data'));
     }
 
+    public function destroy(Request $request): RedirectResponse
+    {
+        ShopList::destroy($request->id);
+        return redirect()->route('lists');
+    }
+
 
 }
