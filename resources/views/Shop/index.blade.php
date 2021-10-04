@@ -15,7 +15,7 @@
                 {{$list->name}}
                 <span class="d-flex align-items-center">
                     <a href="{{route('show_list',$list->id)}}"><i class="fas fa-eye fa-2x" aria-hidden="true"></i></a>
-                    <form method="post" action="/shop/{{$list->id}}"
+                    <form method="post" action="{{route('remove_list',$list->id)}}"
                           onsubmit="return confirm('Deseja remover a lista {{addslashes($list->name)}}')">
                         @csrf
                         @method('delete')
