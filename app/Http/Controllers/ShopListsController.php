@@ -36,6 +36,27 @@ class ShopListsController extends Controller
         return view('Shop.show', compact('data'));
     }
 
+
+    public function edit(Request $request): View
+    {
+        $data = ShopList::find($request->id);
+
+        return view('Shop.edit', compact('data'));
+    }
+
+    public function update(Request $request): RedirectResponse
+    {
+        $dataUpdate = $request->all([
+            'name',
+        ]);
+
+        $data = ShopList::find($request->id);
+        $data->update($dataUpdate);
+        $data->save();
+
+        return redirect()->route('show_list', $data->id);
+    }
+
     public function destroy(Request $request): RedirectResponse
     {
         ShopList::destroy($request->id);
