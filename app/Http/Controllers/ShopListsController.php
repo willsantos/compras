@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShopListFormRequest;
 use App\ShopList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class ShopListsController extends Controller
         return view('Shop.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(ShopListFormRequest $request): RedirectResponse
     {
         $data = ShopList::create($request->all());
         $request->session()->flash('message', "$data->name criada com sucesso.");
@@ -44,7 +45,7 @@ class ShopListsController extends Controller
         return view('Shop.edit', compact('data'));
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(ShopListFormRequest $request): RedirectResponse
     {
         $dataUpdate = $request->all([
             'name',
