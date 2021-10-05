@@ -8,6 +8,10 @@
     @if(count($lists) === 0)
         Não existem listas<br/>
     @endif
+    @if(!empty($message))
+        <div class="alert alert-success">{{$message}}</div>
+    @endif
+
     <ul class="list-group">
         <a href="{{route('form_shop_create')}}" class="btn btn-primary mtb-4">Criar lista</a>
         @foreach($lists as $list)
