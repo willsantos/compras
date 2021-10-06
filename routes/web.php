@@ -25,6 +25,12 @@ Route::get('/shop/edit/{id}', 'ShopListsController@edit')->name('form_shop_edit'
 Route::patch('/shop/{id}', 'ShopListsController@update');
 Route::delete('/shop/{id}', 'ShopListsController@destroy')->name('remove_list');
 
+
+//Rota temporaria
+
+Route::get('/test/item', 'ShopListsController@storeItems');
+
+
 //Rotas dos items
 
 Route::get('/item', 'ItemsController@index')->name('items');

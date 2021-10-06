@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShopListFormRequest;
+use App\ListItem;
 use App\ShopList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,16 +26,34 @@ class ShopListsController extends Controller
     public function store(ShopListFormRequest $request): RedirectResponse
     {
         $data = ShopList::create($request->all());
+
         $request->session()->flash('message', "$data->name criada com sucesso.");
 
         return redirect()->route('lists');
     }
 
+    public function storeItems(Request $request): RedirectResponse
+    {
+
+
+        $item = ListItem::create([
+            'list_id' => '1',
+            'item_id' => '3',
+            'status' => true,
+            'priority' => '0'
+        ]);
+
+        return redirect()->route('show_list', 1);
+    }
+
     public function show(Request $request): View
     {
         $data = ShopList::find($request->id);
+        $items = $data->items()->get();
+
+
         $message = $request->session()->get('message');
-        return view('Shop.show', compact('data', 'message'));
+        return view('Shop.show', compact('data', 'items', 'message'));
     }
 
 
