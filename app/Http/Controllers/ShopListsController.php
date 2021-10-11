@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShopListFormRequest;
+use App\Item;
 use App\ListItem;
 use App\ShopList;
 use Illuminate\Http\RedirectResponse;
@@ -34,14 +35,18 @@ class ShopListsController extends Controller
 
     public function storeItems(Request $request): RedirectResponse
     {
+        $item = Item::findOrCreate($request->name);
 
+        $listItem = (new \App\ListItem)->findOrCreate($request->id, $item->id);
 
-        $item = ListItem::create([
-            'list_id' => '1',
-            'item_id' => '3',
-            'status' => true,
-            'priority' => '0'
+        ListItem::create([
+            'list_id' => $request->id,
+            'item_id' => $item->id,
+            'status' => rand(0, 1),
+            'priority' => rand(0, 3)
         ]);
+
+        $request->session()->flash('message', "$item->name adicionado com sucesso.");
 
         return redirect()->route('show_list', 1);
     }
@@ -50,7 +55,6 @@ class ShopListsController extends Controller
     {
         $data = ShopList::find($request->id);
         $items = $data->items()->get();
-
 
         $message = $request->session()->get('message');
         return view('Shop.show', compact('data', 'items', 'message'));

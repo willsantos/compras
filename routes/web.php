@@ -28,7 +28,7 @@ Route::delete('/shop/{id}', 'ShopListsController@destroy')->name('remove_list');
 
 //Rota temporaria
 
-Route::get('/test/item', 'ShopListsController@storeItems');
+Route::post('/test', 'ShopListsController@storeItems');
 
 
 //Rotas dos items

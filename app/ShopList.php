@@ -19,6 +19,9 @@ class ShopList extends Model
 
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class, 'list_items', 'list_id', 'item_id');
+        return $this->belongsToMany(Item::class, 'list_items', 'list_id', 'item_id')
+            ->withTimestamps()
+            ->withPivot(['status', 'priority'])
+            ->as('list_items');;
     }
 }
