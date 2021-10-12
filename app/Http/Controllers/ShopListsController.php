@@ -36,21 +36,30 @@ class ShopListsController extends Controller
     {
         $item = Item::findOrCreate($request->name);
 
+
         $listItem = (new \App\ListItem)->findOrCreate($request->id, $item->id, $request->priority);
 
-        $request->session()->flash('message', "$item->name adicionado com sucesso.");
+        if ($listItem) {
+            $request->session()->flash('message', "$item->name adicionado com sucesso.");
+        } else {
+            $request->session()->flash('error_add', "$item->name já esta na lista.");
+        }
 
-        return redirect()->route('show_list', 1);
+
+        return redirect()->route('show_list', $request->id);
     }
 
     public function show(Request $request): View
     {
         $data = ShopList::find($request->id);
+
         $items = $data->items()->orderBy('priority', 'ASC')->get();
 
-
         $message = $request->session()->get('message');
-        return view('Shop.show', compact('data', 'items', 'message'));
+        $error_add = $request->session()->get('error_add');
+
+        return view('Shop.show', compact('data', 'items', 'message', 'error_add'));
+
     }
 
 

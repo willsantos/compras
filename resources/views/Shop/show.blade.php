@@ -8,6 +8,9 @@
     @if(!empty($message))
         <div class="alert alert-success">{{$message}}</div>
     @endif
+    @if(!empty($error_add))
+        <div class="alert alert-danger">{{$error_add}}</div>
+    @endif
     <a href="{{route('form_shop_edit',$data->id)}}" class="btn btn-dark mb-2">Alterar nome da Lista</a>
 
     <form action="/test" method="post" class="d-flex justify-content-between align-items-center border border-success">
