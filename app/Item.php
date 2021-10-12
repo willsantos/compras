@@ -15,7 +15,6 @@ class Item extends Model
 
     protected $fillable = ['name'];
 
-
     public function shopLists(): BelongsToMany
     {
         return $this->belongsToMany(Item::class, 'list_items', 'item_id', 'list_id')
@@ -32,5 +31,28 @@ class Item extends Model
             $obj = static::create(['name' => $name]);
         }
         return $obj ?: new static;
+    }
+
+    public function getNameAttribute($name): string
+    {
+        return strtoupper($name);
+    }
+
+    public function getPriorityFormattedAttribute(): string
+    {
+        switch ($this->list_items->attributes['priority']) {
+            case 0:
+                return 'urgente';
+
+            case 1:
+                return 'preciso';
+
+            case 2:
+                return 'seria bom';
+
+            default:
+                return 'erro no cadastro';
+        }
+
     }
 }

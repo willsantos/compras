@@ -33,10 +33,17 @@
     </form>
 
     <ul class="list-group mt-2">
-
         @foreach($items as $item)
             @if($item->list_items->status===0)
-                <li class="list-group-item">{{$item->name}}-{{$item->list_items->priority}}</li>
+                <li class="list-group-item">{{$item->name}}
+                    @if($item->list_items->priority ===0)
+
+                        <span class="badge bg-danger">{{$item->priorityFormatted}}</span></li>
+            @elseif($item->list_items->priority ===1)
+                <span class="badge bg-warning">{{$item->priorityFormatted}}</span></li>
+            @else
+                <span class="badge bg-secondary">{{$item->priorityFormatted}}</span></li>
+            @endif
             @endif
         @endforeach
     </ul>

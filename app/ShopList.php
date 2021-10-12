@@ -16,7 +16,6 @@ class ShopList extends Model
 
     protected $fillable = ['name'];
 
-
     public function items(): BelongsToMany
     {
         return $this->belongsToMany(Item::class, 'list_items', 'list_id', 'item_id')

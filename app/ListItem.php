@@ -35,6 +35,4 @@ class ListItem extends Model
 
         return false;
     }
-
-
 }
