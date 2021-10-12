@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ShopListFormRequest;
 use App\Item;
-use App\ListItem;
 use App\ShopList;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,14 +36,7 @@ class ShopListsController extends Controller
     {
         $item = Item::findOrCreate($request->name);
 
-        $listItem = (new \App\ListItem)->findOrCreate($request->id, $item->id);
-
-        ListItem::create([
-            'list_id' => $request->id,
-            'item_id' => $item->id,
-            'status' => rand(0, 1),
-            'priority' => rand(0, 3)
-        ]);
+        $listItem = (new \App\ListItem)->findOrCreate($request->id, $item->id, $request->priority);
 
         $request->session()->flash('message', "$item->name adicionado com sucesso.");
 
@@ -54,7 +46,8 @@ class ShopListsController extends Controller
     public function show(Request $request): View
     {
         $data = ShopList::find($request->id);
-        $items = $data->items()->get();
+        $items = $data->items()->orderBy('priority', 'ASC')->get();
+
 
         $message = $request->session()->get('message');
         return view('Shop.show', compact('data', 'items', 'message'));

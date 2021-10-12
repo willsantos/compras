@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static create()
- * @method static where(string $string, string $string1, $list, string $string2, string $string3, string $string4, $item)
+ * @method static where(string $column_table, string $operator, $list, string $operator, string $column_table, string $operator, $item)
  */
 class ListItem extends Model
 {
@@ -17,11 +17,21 @@ class ListItem extends Model
         'priority'
     ];
 
-    public function findOrCreate($list, $item): ListItem
+    public function findOrCreate($list, $item, $priority): ListItem
     {
-        $obj = static::where('item_id', '=', $list, 'AND', 'list_id', '=', $item)->first();
+        $obj = static::where('item_id', '=', $item, 'AND', 'list_id', '=', $list)->first();
 
+        if (is_null($obj)) {
+            $obj = static::create([
+                'list_id' => $list,
+                'item_id' => $item,
+                'status' => 0,
+                'priority' => $priority
+            ]);
+        }
 
         return $obj ?: new static;
     }
+
+
 }

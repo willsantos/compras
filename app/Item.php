@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @method static create(array $all)
  * @method static find(mixed $id)
- * @method static where(string $string, string $string1, $name)
+ * @method static where(string $table_column, string $operator, $name)
  */
 class Item extends Model
 {
