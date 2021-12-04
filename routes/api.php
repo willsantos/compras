@@ -19,3 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/shop', 'ShopListsControllerApi@index')->name('lists');
 Route::post('/shop', 'ShopListsControllerApi@store');
+Route::get('/shop/{id}', 'ShopListsControllerApi@show')->name('show_list');
+Route::delete('/shop/{id}', 'ShopListsControllerApi@destroy')->name('remove_list');
+
+Route::post('/shop/{id}/add', 'ShopListsControllerApi@storeItems')->name('add_list_item');

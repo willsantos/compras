@@ -10,7 +10,6 @@ use ErrorException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class ShopListsControllerApi extends Controller
 {
@@ -32,7 +31,7 @@ class ShopListsControllerApi extends Controller
 
     }
 
-    public function storeItems(Request $request): RedirectResponse
+    public function storeItems(Request $request): JsonResponse
     {
         $item = Item::findOrCreate($request->name);
 
@@ -40,13 +39,13 @@ class ShopListsControllerApi extends Controller
         $listItem = (new ListItem)->findOrCreate($request->id, $item->id, $request->priority);
 
         if ($listItem) {
-            $request->session()->flash('message', "$item->name adicionado com sucesso.");
+
+            return Response()->json("$item->name adicionado com sucesso");
         } else {
-            $request->session()->flash('error_add', "$item->name já esta na lista.");
+
+            return Response()->json("$item->name já está na lista");
         }
 
-
-        return redirect()->route('show_list', $request->id);
     }
 
     public function updateItems(Request $request): RedirectResponse
@@ -69,26 +68,17 @@ class ShopListsControllerApi extends Controller
 
     }
 
-    public function show(Request $request): View
+    public function show(Request $request): JsonResponse
     {
         $data = ShopList::find($request->id);
 
         $items = $data->items()->orderBy('priority', 'ASC')->get();
 
-        $message = $request->session()->get('message');
-        $error_add = $request->session()->get('error_add');
+        return Response()->json($items);
 
-        return view('Shop.show', compact('data', 'items', 'message', 'error_add'));
 
     }
 
-
-    public function edit(Request $request): View
-    {
-        $data = ShopList::find($request->id);
-
-        return view('Shop.edit', compact('data'));
-    }
 
     public function update(ShopListFormRequest $request): RedirectResponse
     {
@@ -108,12 +98,20 @@ class ShopListsControllerApi extends Controller
         return redirect()->route('show_list', $data->id);
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request): JsonResponse
     {
-        ShopList::destroy($request->id);
 
-        $request->session()->flash('message', "Lista excluída com sucesso.");
-        return redirect()->route('lists');
+        if (!ShopList::find($request->id)) {
+            return Response()->json('Lista não existe');
+        }
+
+        try {
+            ShopList::destroy($request->id);
+            return Response()->json('Lista excluída com sucesso');
+        } catch (\Exception $e) {
+            return Response()->json('Falha ao excluir');
+        }
+
     }
 
 
